@@ -3,18 +3,6 @@
   flex-wrap: wrap;
   &__item {
     width: 20%;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  &__typeahead {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-  }
-  &__image-tagitem {
-    margin-left: 3px;
+    min-height: 200px;
   }
 }
