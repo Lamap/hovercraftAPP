@@ -1,10 +1,10 @@
 import * as React from 'react';
 import './App.css';
 import Bela from './components/bela';
-import TagControl from './components/tagController/tagController';
 import ImageList from './components/imageList/imageList';
 
 const logo = require('./minion.svg');
+const apiBaseUrl: string = 'http://localhost:5558';
 
 class App extends React.Component<any, any> {
     constructor(props: any) {
@@ -16,7 +16,7 @@ class App extends React.Component<any, any> {
     }
 
     componentDidMount() {
-        fetch('http://localhost:5559/images')
+        fetch(apiBaseUrl + '/images')
             .then(res => res.json())
             .then(result => {
                 this.setState({
@@ -24,7 +24,7 @@ class App extends React.Component<any, any> {
                 });
                 console.log(this.state);
             });
-        fetch('http://localhost:5559/tags')
+        fetch(apiBaseUrl + '/tags')
             .then(res => res.json())
             .then(result => {
                 this.setState({
@@ -42,8 +42,7 @@ class App extends React.Component<any, any> {
               <h1 className="App-title">Welcome to hovercraft</h1>
             </header>
             <Bela name="jenő" />
-              <TagControl avalaibleTags={['bela', 'jeno']} selectedTags={['jojo', 'jaja']}/>
-              <ImageList images={this.state.items} tags={this.state.tags}/>
+            <ImageList images={this.state.items} tags={this.state.tags}/>
           </div>
         );
     }

@@ -1,8 +1,11 @@
 .imagelist {
-  display: flex;
-  flex-wrap: wrap;
-  padding: 20px;
-  background-color: beige;
+
+  &__body {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 20px;
+    background-color: beige;
+  }
   &__col {
     .imagelist--divided-1 & {
       width: 100%;

@@ -1,10 +1,11 @@
 import * as React from 'react';
 import './imageItem.css';
+import 'react-bootstrap-typeahead/css/Typeahead.css';
 import { Typeahead } from 'react-bootstrap-typeahead';
 
 export interface Props {
     image: any;
-    tags: any[];
+    avalaibleTags: any[];
 }
 export interface State {
     showStaticTags: boolean;
@@ -17,11 +18,19 @@ class ImageItem extends React.Component<Props, State> {
             showStaticTags: false,
             showDynamicTags: true
         };
+        this.tagsUpdated = this.tagsUpdated.bind(this);
     }
 
-    changed(items: string[]) {
-        console.log('changed', items);
-        // TODO: do the comparison with the previous array, send new tag to the API
+    tagsUpdated(items: any[]) {
+        let newTag: string;
+        let newItems = items.filter((item) => {
+            return this.props.image.tags.indexOf(item) === -1;
+        });
+        if (newItems.length) {
+            const newOne: any = newItems.pop();
+            newTag = typeof newOne === 'string' ? newOne : newOne.label;
+            console.log(newTag);
+        }
     }
     render() {
         return (
@@ -36,15 +45,15 @@ class ImageItem extends React.Component<Props, State> {
                             this.props.image.tags.map((tag: any) =>
                             <span className="image-item__tag label label-info" key={tag}>{tag}</span>
                         )}
-                    </div> : ''
+                    </div> : null
                 }
                 <div className="image-item__typeahead">
                     <Typeahead
-                        options={this.props.tags}
+                        options={this.props.avalaibleTags}
                         multiple={true}
                         align="left"
                         allowNew={true}
-                        onChange={this.changed}
+                        onChange={this.tagsUpdated}
                         defaultSelected={this.props.image.tags}
                         placeholder="Add tag"
                     />

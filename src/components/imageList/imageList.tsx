@@ -1,8 +1,9 @@
 import * as React from 'react';
-// import { Typeahead } from 'react-bootstrap-typeahead';
 import './imageList.css';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
+
 import ImageItem from '../imageItem/imageItem';
+import { Typeahead } from 'react-bootstrap-typeahead';
 
 export interface Props {
     images: any[];
@@ -10,15 +11,19 @@ export interface Props {
 }
 export interface State {
     colCount: number;
+    selectedTags: string[];
 }
 
 class ImageList extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = {
-            colCount: 5
+            colCount: 5,
+            selectedTags: []
         };
+        this.filterTagsChanged = this.filterTagsChanged.bind(this);
     }
+
     getCols() {
         let cols: any[] = [];
 
@@ -30,10 +35,27 @@ class ImageList extends React.Component<Props, State> {
 
         return cols;
     }
+
+    filterTagsChanged(updatedList: string[]) {
+        this.setState({selectedTags: updatedList});
+    }
+
     render() {
         const cols = this.getCols();
         return (
             <div className={'imagelist imagelist--divided-' + this.state.colCount}>
+                <div className="imagelist__header">
+                    <div className="imagelist__filter-container">
+                        <Typeahead
+                            options={this.props.tags}
+                            multiple={true}
+                            align="left"
+                            onChange={this.filterTagsChanged}
+                            placeholder="Write tags to filter"
+                        />
+                    </div>
+                </div>
+                <div className="imagelist__body">
                 {
                     cols.map((col, colIndex) =>
                         <div key={colIndex} className="imagelist__col">
@@ -41,11 +63,12 @@ class ImageList extends React.Component<Props, State> {
                                 (image: any, imageIndex: number) => <ImageItem
                                     key={imageIndex}
                                     image={image}
-                                    tags={this.props.tags}
+                                    avalaibleTags={this.props.tags}
                                 />
                             )}
                         </div>)
                 }
+                </div>
             </div>
         );
     }
